@@ -36,7 +36,6 @@ class SchemaFacade {
      */
     public static function setConfig($params=array())
     {
-
         self::$config=$params;
 
         return new static();
