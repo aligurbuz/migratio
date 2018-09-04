@@ -34,7 +34,8 @@ class SchemaFacade {
      * @param array $params
      * @return SchemaContract
      */
-    public static function setConfig($params=array()){
+    public static function setConfig($params=array())
+    {
 
         self::$config=$params;
 
@@ -45,8 +46,8 @@ class SchemaFacade {
      * @param $appName
      * @return SchemaFacade
      */
-    public static function getInstance(){
-
+    public static function getInstance()
+    {
         if(is_null(self::$instance)){
             self::$instance=new self();
         }
@@ -57,24 +58,24 @@ class SchemaFacade {
      * @param $appName
      * @return \Resta\Migration\Src\Schema
      */
-    protected static function getSchema(){
-
+    protected static function getSchema()
+    {
         return self::getInstance()->schema;
     }
 
     /**
      * @return string
      */
-    public static function pull(){
-
+    public static function pull()
+    {
         return self::getSchema()->pull();
     }
 
     /**
      * @return string
      */
-    public static function push(){
-
+    public static function push()
+    {
         return self::getSchema()->push();
     }
 }
