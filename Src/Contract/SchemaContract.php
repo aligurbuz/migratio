@@ -1,6 +1,6 @@
 <?php
 
-namespace Resta\Migration\Src\Contract;
+namespace Migratio\Contract;
 
 interface SchemaContract {
 

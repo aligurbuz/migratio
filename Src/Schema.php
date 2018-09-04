@@ -1,8 +1,8 @@
 <?php
 
-namespace Resta\Migration\Src;
+namespace Migratio;
 
-use Resta\Migration\Src\Contract\SchemaContract;
+use Migratio\Contract\SchemaContract;
 
 class Schema implements SchemaContract
 {
