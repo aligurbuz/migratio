@@ -23,16 +23,16 @@ class Schema implements SchemaContract
     /**
      * @return string
      */
-    public function pull(){
-
+    public function pull()
+    {
         return 'pull xxx';
     }
 
     /**
      * @return string
      */
-    public function push(){
-
+    public function push()
+    {
         return 'push';
     }
 }
