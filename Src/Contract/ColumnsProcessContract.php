@@ -2,17 +2,18 @@
 
 namespace Migratio\Contract;
 
-interface QueryBaseContract {
+interface ColumnsProcessContract {
 
     /**
      * @return mixed
      */
-    public function getTables();
+    public function all();
 
     /**
      * @param array $tables
      * @return mixed
      */
-    public function getColumns($tables=array());
+    public function fields($tables=array());
 
 }
+

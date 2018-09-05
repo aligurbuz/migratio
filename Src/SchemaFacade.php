@@ -3,7 +3,7 @@
 namespace Migratio;
 
 use Migratio\Schema;
-use Migratio\Contract\SchemaContract;
+use Migratio\Contract\SchemaFacadeContract;
 
 class SchemaFacade {
 
@@ -23,6 +23,11 @@ class SchemaFacade {
     protected static $config=array();
 
     /**
+     * @var array $tables
+     */
+    protected static $tables=array();
+
+    /**
      * SchemaFacade constructor.
      */
     public function __construct()
@@ -32,11 +37,22 @@ class SchemaFacade {
 
     /**
      * @param array $params
-     * @return SchemaContract
+     * @return SchemaFacadeContract
      */
     public static function setConfig($params=array())
     {
         self::$config=$params;
+
+        return new static();
+    }
+
+    /**
+     * @param array $tables
+     * @return SchemaFacadeContract
+     */
+    public static function tables($tables=array()){
+
+        self::$tables=$tables;
 
         return new static();
     }
@@ -67,7 +83,11 @@ class SchemaFacade {
      */
     public static function pull()
     {
-        return self::getSchema()->pull();
+        $schema = self::getSchema();
+
+        $schema->params['tables']=self::$tables;
+
+        return $schema->pull();
     }
 
     /**
@@ -75,6 +95,10 @@ class SchemaFacade {
      */
     public static function push()
     {
-        return self::getSchema()->push();
+        $schema = self::getSchema();
+
+        $schema->params['tables']=self::$tables;
+
+        return $schema->push();
     }
 }

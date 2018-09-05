@@ -11,6 +11,11 @@ use Migratio\Resource\PushManager\Pushing;
 class Schema implements SchemaContract
 {
     /**
+     * @var array $params
+     */
+    public $params = array();
+
+    /**
      * @var $config
      */
     protected $config;
@@ -32,11 +37,19 @@ class Schema implements SchemaContract
     }
 
     /**
+     * @return mixed
+     */
+    public function getConnection(){
+
+        return $this->connection;
+    }
+
+    /**
      * @return Pulling|mixed
      */
     public function pull()
     {
-        $pulling = new Pulling($this->connection);
+        $pulling = new Pulling($this);
 
         return $pulling->get();
     }
@@ -46,7 +59,7 @@ class Schema implements SchemaContract
      */
     public function push()
     {
-        $pushing = new Pushing($this->connection);
+        $pushing = new Pushing($this);
 
         return $pushing->get();
     }

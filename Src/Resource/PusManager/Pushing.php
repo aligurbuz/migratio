@@ -2,28 +2,16 @@
 
 namespace Migratio\Resource\PushManager;
 
-class Pushing
+use Migratio\Resource\BaseManager;
+
+class Pushing extends BaseManager
 {
-    /**
-     * @var $connection
-     */
-    protected $connection;
-
-    /**
-     * Pulling constructor.
-     * @param $connection
-     */
-    public function __construct($connection)
-    {
-        $this->connection=$connection;
-    }
-
     /**
      * @return mixed
      */
     public function get()
     {
-        $tables = $this->connection->getTables();
+        $tables = $this->getTables();
 
         return $tables;
     }

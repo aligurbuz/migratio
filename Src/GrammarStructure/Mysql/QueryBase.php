@@ -3,9 +3,14 @@
 namespace Migratio\GrammarStructure\Mysql;
 
 use Migratio\Contract\QueryBaseContract;
+use Migratio\Contract\ColumnsProcessContract;
+use Migratio\GrammarStructure\Mysql\Traits\QueryStack;
+use Migratio\GrammarStructure\Mysql\Traits\ColumnsProcess;
 
 class QueryBase implements QueryBaseContract
 {
+    use QueryStack,ColumnsProcess;
+
     /**
      * @return mixed
      */
@@ -19,7 +24,7 @@ class QueryBase implements QueryBaseContract
      */
     public function getTables()
     {
-        $tables = $this->getConnection()->query('SHOW TABLES')->fetchAll();
+        $tables = $this->showTables();
 
         $list = [];
 
@@ -29,6 +34,29 @@ class QueryBase implements QueryBaseContract
         }
 
         return $list;
+    }
+
+    /**
+     * @param array $tables
+     * @return ColumnsProcessContract
+     */
+    public function getColumns($tables=array()){
+
+        $tableList = (count($tables)) ? $tables : $this->getTables();
+
+        $list = [];
+
+        foreach ($tableList as $table){
+
+            if(in_array($table,$this->getTables())){
+                $list[$table] = $this->showColumnsFrom($table);
+            }
+        }
+
+        $this->columnsProcess($list);
+
+        return $this;
+
     }
 }
 

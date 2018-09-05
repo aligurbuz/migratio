@@ -2,30 +2,18 @@
 
 namespace Migratio\Resource\PullManager;
 
+use Migratio\Schema;
+use Migratio\Resource\BaseManager;
 use Migratio\Contract\QueryBaseContract;
 
-class Pulling
+class Pulling extends BaseManager
 {
-    /**
-     * @var $connection QueryBaseContract
-     */
-    protected $connection;
-
-    /**
-     * Pulling constructor.
-     * @param $connection
-     */
-    public function __construct($connection)
-    {
-        $this->connection=$connection;
-    }
-
     /**
      * @return mixed
      */
     public function get()
     {
-        $tables = $this->connection->getTables();
+        $tables = $this->getColumns()->fields();
 
         return $tables;
     }
