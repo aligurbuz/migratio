@@ -35,7 +35,8 @@ class Mysql extends QueryBase
     /**
      * @return \PDO
      */
-    public function getConnection(){
+    public function getConnection()
+    {
         return $this->connection;
     }
 
