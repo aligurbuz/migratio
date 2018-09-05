@@ -9,7 +9,7 @@ trait QueryStack
      */
     public function showTables()
     {
-       return $this->getConnection()->query('SHOW TABLES')->fetchAll();
+       return $this->connection()->query('SHOW TABLES')->fetchAll();
     }
 
     /**
@@ -18,7 +18,7 @@ trait QueryStack
      */
     public function showColumnsFrom($table)
     {
-        return $this->getConnection()->query('SHOW COLUMNS FROM '.$table)->fetchAll();
+        return $this->connection()->query('SHOW COLUMNS FROM '.$table)->fetchAll();
     }
 
 }

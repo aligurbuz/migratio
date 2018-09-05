@@ -40,8 +40,8 @@ class QueryBase implements QueryBaseContract
      * @param array $tables
      * @return ColumnsProcessContract
      */
-    public function getColumns($tables=array()){
-
+    public function getColumns($tables=array())
+    {
         $tableList = (count($tables)) ? $tables : $this->getTables();
 
         $list = [];

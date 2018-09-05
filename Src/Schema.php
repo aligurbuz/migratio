@@ -2,7 +2,6 @@
 
 namespace Migratio;
 
-use Migratio\Resource\SqlResource;
 use Migratio\Resource\SqlDefinitor;
 use Migratio\Contract\SchemaContract;
 use Migratio\Resource\PullManager\Pulling;
@@ -31,16 +30,15 @@ class Schema implements SchemaContract
      */
     public function __construct($config=null)
     {
-        $this->config=$config;
-
-        $this->connection = (new SqlDefinitor($this->config))->getConnection();
+        $this->config           = $config;
+        $this->connection       = (new SqlDefinitor($this->config))->getConnection();
     }
 
     /**
      * @return mixed
      */
-    public function getConnection(){
-
+    public function getConnection()
+    {
         return $this->connection;
     }
 

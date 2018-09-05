@@ -5,6 +5,11 @@ namespace Migratio\Connector;
 class Connector
 {
     /**
+     * @var $instance
+     */
+    protected static $instance;
+
+    /**
      * @var string
      */
     protected $driver;

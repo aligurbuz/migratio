@@ -7,6 +7,11 @@ use Migratio\GrammarStructure\Mysql\QueryBase;
 class Mysql extends QueryBase
 {
     /**
+     * @var $instance
+     */
+    private static $instance;
+
+    /**
      * @var $connection
      */
     protected $connection;
@@ -17,9 +22,14 @@ class Mysql extends QueryBase
      */
     public function __construct($config)
     {
-        //get pdo dsn
-        $dsn=''.$config['driver'].':host='.$config['host'].';dbname='.$config['database'].'';
-        $this->connection = new \PDO($dsn, $config['user'], $config['password']);
+        if(is_null(self::$instance)){
+
+            //get pdo dsn
+            $dsn=''.$config['driver'].':host='.$config['host'].';dbname='.$config['database'].'';
+            $this->connection = new \PDO($dsn, $config['user'], $config['password']);
+
+            self::$instance=true;
+        }
     }
 
     /**

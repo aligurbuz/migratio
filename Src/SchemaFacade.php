@@ -30,9 +30,11 @@ class SchemaFacade {
     /**
      * SchemaFacade constructor.
      */
-    public function __construct()
+    public function __construct($config=array())
     {
-        $this->schema=new Schema(self::$config);
+        if(count($config)){
+            $this->schema=new Schema($config);
+        }
     }
 
     /**
@@ -50,8 +52,8 @@ class SchemaFacade {
      * @param array $tables
      * @return SchemaFacadeContract
      */
-    public static function tables($tables=array()){
-
+    public static function tables($tables=array())
+    {
         self::$tables=$tables;
 
         return new static();
@@ -64,7 +66,7 @@ class SchemaFacade {
     public static function getInstance()
     {
         if(is_null(self::$instance)){
-            self::$instance=new self();
+            self::$instance=new self(self::$config);
         }
         return self::$instance;
     }

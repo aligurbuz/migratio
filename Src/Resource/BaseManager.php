@@ -31,16 +31,16 @@ class BaseManager
     /**
      * @return mixed
      */
-    public function getTables(){
-
+    public function getTables()
+    {
         return $this->connection->getTables();
     }
 
     /**
      * @return ColumnsProcessContract
      */
-    public function getColumns(){
-
+    public function getColumns()
+    {
         $tables = $this->schema->params['tables'];
 
         return $this->connection->getColumns($tables);
