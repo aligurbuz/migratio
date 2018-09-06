@@ -4,6 +4,7 @@ namespace Migratio;
 
 use Migratio\Schema;
 use Migratio\Contract\SchemaFacadeContract;
+use Migratio\GrammarStructure\Mysql\Wizard\Wizard;
 
 class SchemaFacade {
 
@@ -103,4 +104,5 @@ class SchemaFacade {
 
         return $schema->push();
     }
+
 }

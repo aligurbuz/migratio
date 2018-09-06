@@ -6,6 +6,7 @@ use Migratio\Schema;
 use Migratio\Resource\BaseManager;
 use Migratio\Contract\QueryBaseContract;
 use Migratio\Resource\Request\BaseRequestProcess;
+use Migratio\SchemaCapsule;
 
 class Pulling extends BaseManager
 {
@@ -16,10 +17,27 @@ class Pulling extends BaseManager
     {
         BaseRequestProcess::$paths=$this->config['paths'];
 
-        $tables = BaseRequestProcess::getAllFiles();
+        $allFiles = BaseRequestProcess::getAllFiles();
 
-        dd(BaseRequestProcess::setDirectoryForTableNames($this->getTables()));
+        foreach ($allFiles as $table=>$files){
 
-        return $tables;
+            foreach ($files as $file) {
+
+                $className = str_replace(".php","",BaseRequestProcess::getFileName($file));
+                $className = ucfirst($className);
+
+                $require = require_once ($file);
+
+                $up = new $className;
+
+                $capsule = new SchemaCapsule($this->config,$file);
+
+                dd($up->up($capsule));
+            }
+
+
+        }
+
+
     }
 }

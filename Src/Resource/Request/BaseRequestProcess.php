@@ -94,14 +94,9 @@ class BaseRequestProcess
                 if(!file_exists($path)){
                    $mkdirResults[] = mkdir($path, 0777);
                 }
-
             }
         }
 
-        //mkdir result false exception
-        if(in_array(false,$mkdirResults)){
-            throw new \InvalidArgumentException('Creating directory is fail');
-        }
 
         dd(self::getAllDirectories(),$tables,$mkdirResults);
     }
