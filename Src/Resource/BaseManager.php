@@ -19,12 +19,18 @@ class BaseManager
     protected $schema;
 
     /**
+     * @var $config
+     */
+    protected $config;
+
+    /**
      * Pulling constructor.
      * @param $schema Schema
      */
     public function __construct($schema)
     {
         $this->schema       = $schema;
+        $this->config       = $this->schema->getConfig();
         $this->connection   = $this->schema->getConnection();
     }
 

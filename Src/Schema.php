@@ -43,6 +43,14 @@ class Schema implements SchemaContract
     }
 
     /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
      * @return Pulling|mixed
      */
     public function pull()
