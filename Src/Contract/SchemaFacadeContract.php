@@ -19,4 +19,13 @@ interface SchemaFacadeContract {
      * @return SchemaContract
      */
     public function tables($tables=array());
+
+    /**
+     * @param $table
+     * @param $type
+     * @param $name
+     * @param array $paths
+     * @return mixed
+     */
+    public function stub($table,$type,$name,$paths=[0]);
 }

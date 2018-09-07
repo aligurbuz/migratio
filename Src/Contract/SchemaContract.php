@@ -13,4 +13,10 @@ interface SchemaContract {
      * @return mixed
      */
     public function push();
+
+    /**
+     * @param mixed ...$params
+     * @return mixed
+     */
+    public function stub(...$params);
 }

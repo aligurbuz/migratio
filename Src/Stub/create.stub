@@ -1,0 +1,31 @@
+<?php
+
+use Migratio\Contract\WizardContract as Wizard;
+use Migratio\Contract\SchemaCapsuleContract as Schema;
+
+class __className__
+{
+    /**
+     * Run the migrations.
+     *
+     * @param Schema $schema
+     * @return void
+     */
+    public function up(Schema $schema)
+    {
+        $schema->migrate('create',function(Wizard $wizard){
+
+            //
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
+}

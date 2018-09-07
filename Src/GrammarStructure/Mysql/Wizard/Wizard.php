@@ -7,14 +7,29 @@ use Migratio\Contract\WizardContract;
 class Wizard extends WizardHelper implements WizardContract
 {
     /**
+     * @var array $error
+     */
+    protected $error = array();
+
+    /**
      * @var array
      */
     protected $auto_increment=array();
 
     /**
+     * @var array $primaryKey
+     */
+    protected $primaryKey=array();
+
+    /**
      * @var $schemaType
      */
     protected $schemaType;
+
+    /**
+     * @var $file
+     */
+    protected $file;
 
     /**
      * @var $name array
@@ -37,16 +52,6 @@ class Wizard extends WizardHelper implements WizardContract
     protected $default=array();
 
     /**
-     * @return mixed|void
-     */
-    public function auto_increment()
-    {
-        if(count($this->auto_increment)==0){
-            $this->auto_increment[$this->getLastName()]=true;
-        }
-    }
-
-    /**
      * @param $schemaType
      */
     public function schemaType($schemaType)
@@ -59,7 +64,25 @@ class Wizard extends WizardHelper implements WizardContract
      */
     public function setTypes($type,$value)
     {
-        $this->types[]=''.$type.' '.$value.'';
+        $this->types[]=''.$type.'('.$value.')';
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getLastName(){
+
+        return end($this->name);
+    }
+
+    /**
+     * @return mixed|void
+     */
+    public function auto_increment()
+    {
+        if(count($this->auto_increment)==0){
+            $this->auto_increment[$this->getLastName()]=true;
+        }
     }
 
     /**
@@ -68,6 +91,10 @@ class Wizard extends WizardHelper implements WizardContract
      */
     public function name($name)
     {
+        if(in_array($name,$this->name)){
+           $this->setError('You have written the '.$name.' name more than 1.');
+        }
+
         $this->name[]=$name;
 
         return new Types($this);
@@ -96,12 +123,11 @@ class Wizard extends WizardHelper implements WizardContract
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    private function getLastName(){
+    public function primaryKey()
+    {
+        $this->primaryKey[$this->getLastName()]=true;
 
-        return end($this->name);
+        return $this;
     }
 }
 

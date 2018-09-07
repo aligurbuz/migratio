@@ -42,13 +42,23 @@ class SchemaCapsule implements SchemaCapsuleContract
 
         $wizard->schemaType($type);
 
+        $wizard->setFile($this->file);
+
         $callback = call_user_func_array($callback,[$wizard]);
 
-        if(count($wizard->getNames())!==count($wizard->getTypes())){
-            throw new \InvalidArgumentException('Name and type values are not equal (in the '.$this->file.')');
-        }
+        $this->checkErrors($wizard);
 
-        dd($wizard);
+        return $wizard;
+    }
+
+    /**
+     * @param $wizard
+     */
+    public function checkErrors($wizard)
+    {
+        if(count($wizard->getNames())!==count($wizard->getTypes())){
+            $wizard->setError('name and types are not equal');
+        }
     }
 }
 

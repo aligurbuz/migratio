@@ -105,4 +105,14 @@ class SchemaFacade {
         return $schema->push();
     }
 
+    /**
+     * @return mixed
+     */
+    public function stub()
+    {
+        $schema = self::getSchema();
+
+        return $schema->stub(func_get_args());
+    }
+
 }

@@ -58,5 +58,10 @@ class QueryBase implements QueryBaseContract
         return $this;
 
     }
+
+    public function createTable()
+    {
+
+    }
 }
 

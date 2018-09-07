@@ -29,5 +29,10 @@ interface WizardContract {
      */
     public function nullable($null=true);
 
+    /**
+     * @return mixed
+     */
+    public function primaryKey();
+
 }
 
