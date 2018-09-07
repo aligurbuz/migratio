@@ -29,7 +29,7 @@ class QuerySyntax
 
         $syntax.=');';
 
-        dd($this->schema->getConnection()->setQueryBasic($syntax));
+        return $this->schema->getConnection()->setQueryBasic($syntax);
 
         dd($syntax,$this->object->getNames(),$this->object,$this->object->getTypes());
 

@@ -11,14 +11,30 @@ trait PushingProcess
      */
     public function processHandler()
     {
-        return $this->errorHandler(function(){
+        $results = [];
 
+        return $this->errorHandler(function(){
+            
             foreach ($this->list as $table =>$datas){
+
                 foreach ($datas as $data){
+
                     $queryBuilder = $this->schema->getGrammarPath().'\QueryBuilder';
-                    (new $queryBuilder($this->schema,$table,$data,$this->connection))->handle();
+
+                    $query = (new $queryBuilder($this->schema,$table,$data))->handle();
+
+                    $status =($query!==false) ? true : false;
+
+                    $results[]= [
+                        'success'=>$status,
+                        'file'=>$data->getFile(),
+                        'table'=>$table,
+                        'message'=>'Migration in the '.$data->getFile().' for '.$table.' has been executed'
+                    ];
                 }
             }
+
+            return $results;
         });
     }
 

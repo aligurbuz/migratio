@@ -8,7 +8,7 @@ use Migratio\Resource\PullManager\Pulling;
 use Migratio\Resource\PushManager\Pushing;
 use Migratio\Resource\StubManager\Stubber;
 
-class Schema implements SchemaContract
+class Schema extends SchemaHelper implements SchemaContract
 {
     /**
      * @var array $params
@@ -48,38 +48,6 @@ class Schema implements SchemaContract
     }
 
     /**
-     * @return mixed
-     */
-    public function getConnection()
-    {
-        return $this->connection;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDriver()
-    {
-        return $this->driver;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGrammarPath()
-    {
-        return $this->grammarPath;
-    }
-
-    /**
      * @return Pulling|mixed
      */
     public function pull()
@@ -96,7 +64,7 @@ class Schema implements SchemaContract
     {
         $pushing = new Pushing($this);
 
-        return $pushing->get();
+        return $pushing->handle();
     }
 
     /**
@@ -106,6 +74,6 @@ class Schema implements SchemaContract
     {
         $stubber = new Stubber($this);
 
-        return $stubber->handle($params[0]);
+        return $stubber->get($params[0]);
     }
 }

@@ -30,7 +30,7 @@ interface WizardContract {
     public function nullable($null=true);
 
     /**
-     * @return mixed
+     * @return $this
      */
     public function primaryKey();
 

@@ -12,8 +12,8 @@ class BaseRequestProcess
     /**
      * @param $path
      */
-    public static function chmod($path) {
-
+    public static function chmod($path)
+    {
         $dir = new \DirectoryIterator($path);
 
         foreach ($dir as $item) {
@@ -96,7 +96,6 @@ class BaseRequestProcess
                 }
             }
         }
-
 
         dd(self::getAllDirectories(),$tables,$mkdirResults);
     }

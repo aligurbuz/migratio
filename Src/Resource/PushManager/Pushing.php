@@ -18,32 +18,46 @@ class Pushing extends BaseManager
     protected $list = array();
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function get()
+    protected function getAllFiles()
     {
         BaseRequestProcess::$paths=$this->config['paths'];
 
-        $allFiles = BaseRequestProcess::getAllFiles();
+        return BaseRequestProcess::getAllFiles();
+    }
 
-        foreach ($allFiles as $table=>$files){
+    /**
+     * @return mixed
+     */
+    public function handle()
+    {
+        foreach ($this->getAllFiles() as $table=>$files){
 
             foreach ($files as $file) {
 
-                $className = str_replace(".php","",BaseRequestProcess::getFileName($file));
-                $className = ucfirst($className);
+                $className = $this->getClassName($file);
 
                 $require = require_once ($file);
 
-                $up = new $className;
-
                 $capsule = new SchemaCapsule($this->config,$file);
 
-                $this->list[$table][]=$up->up($capsule);
-
+                $this->list[$table][]=(new $className)->up($capsule);
             }
         }
 
         return $this->processHandler();
+    }
+
+    /**
+     * @param $file
+     * @return mixed|string
+     */
+    protected function getClassName($file)
+    {
+        $className = str_replace(".php","",BaseRequestProcess::getFileName($file));
+        $className = ucfirst($className);
+
+        return $className;
     }
 }

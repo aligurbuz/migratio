@@ -77,7 +77,7 @@ class Stubber
     /**
      * @param $params
      */
-    public function handle($params)
+    public function get($params)
     {
         list($table,$type,$name) = $params;
 
