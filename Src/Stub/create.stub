@@ -9,11 +9,11 @@ class __className__
      * Run the migrations.
      *
      * @param Schema $schema
-     * @return void
+     * @return mixed
      */
     public function up(Schema $schema)
     {
-        $schema->migrate('create',function(Wizard $wizard){
+        return $schema->migrate('create',function(Wizard $wizard){
 
             //
         });

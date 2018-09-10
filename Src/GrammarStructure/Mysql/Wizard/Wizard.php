@@ -2,6 +2,7 @@
 
 namespace Migratio\GrammarStructure\Mysql\Wizard;
 
+use Migratio\Contract\TablePropertiesContract;
 use Migratio\Contract\WizardContract;
 
 class Wizard extends WizardHelper implements WizardContract
@@ -15,6 +16,11 @@ class Wizard extends WizardHelper implements WizardContract
      * @var array
      */
     protected $auto_increment=array();
+
+    /**
+     * @var $collation
+     */
+    protected $collation;
 
     /**
      * @var array $primaryKey
@@ -47,33 +53,14 @@ class Wizard extends WizardHelper implements WizardContract
     protected $types=array();
 
     /**
+     * @var $engine
+     */
+    protected $engine;
+
+    /**
      * @var $default array
      */
     protected $default=array();
-
-    /**
-     * @param $schemaType
-     */
-    public function schemaType($schemaType)
-    {
-        $this->schemaType=$schemaType;
-    }
-
-    /**
-     * @param $type
-     */
-    public function setTypes($type,$value)
-    {
-        $this->types[]=''.$type.'('.$value.')';
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getLastName(){
-
-        return end($this->name);
-    }
 
     /**
      * @return mixed|void
@@ -82,6 +69,7 @@ class Wizard extends WizardHelper implements WizardContract
     {
         if(count($this->auto_increment)==0){
             $this->auto_increment[$this->getLastName()]=true;
+            $this->primaryKey();
         }
     }
 
@@ -113,6 +101,24 @@ class Wizard extends WizardHelper implements WizardContract
     }
 
     /**
+     * @param $value
+     * @param bool $table
+     * @return $this
+     */
+    public function collation($value,$table=false)
+    {
+        if($table===false)
+        {
+            $this->collation[$this->getLastName()]=$value;
+        }
+        else{
+            $this->collation['table']=$value;
+        }
+
+        return $this;
+    }
+
+    /**
      * @param bool $null
      * @return $this
      */
@@ -128,6 +134,14 @@ class Wizard extends WizardHelper implements WizardContract
         $this->primaryKey[$this->getLastName()]=true;
 
         return $this;
+    }
+
+    /**
+     * @return TablePropertiesContract
+     */
+    public function table()
+    {
+        return new TableProperties($this);
     }
 }
 

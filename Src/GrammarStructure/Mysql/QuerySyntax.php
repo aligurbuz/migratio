@@ -12,6 +12,8 @@ class QuerySyntax
         $types          = $object->getTypes();
         $autoIncrement  = $object->getAutoIncrement();
         $primaryKey     = $object->getPrimaryKey();
+        $tableCollation = $object->getCollation();
+        $engine         = $object->getEngine();
 
         $syntax = 'CREATE TABLE '.$this->table.' (';
 
@@ -27,11 +29,25 @@ class QuerySyntax
 
         $syntax.=implode(",",$list);
 
-        $syntax.=');';
+        $syntax.=')';
 
-        return $this->schema->getConnection()->setQueryBasic($syntax);
+        //get table collation
+        if(isset($tableCollation['table'])){
+            $syntax.=' DEFAULT CHARACTER SET '.$tableCollation['table'];
+        }
 
-        dd($syntax,$this->object->getNames(),$this->object,$this->object->getTypes());
+        //get engine
+        if($engine!==null)
+        {
+            $syntax.=' ENGINE='.$engine.' ';
+        }
+
+        $syntax.=';';
+
+        return [
+            'syntax'=>$syntax,
+            'result'=>$this->schema->getConnection()->setQueryBasic($syntax)
+            ];
 
     }
 

@@ -34,5 +34,17 @@ interface WizardContract {
      */
     public function primaryKey();
 
+    /**
+     * @return TablePropertiesContract
+     */
+    public function table();
+
+    /**
+     * @param $value
+     * @param bool $table
+     * @return TablePropertiesContract
+     */
+    public function collation($value,$table=false);
+
 }
 

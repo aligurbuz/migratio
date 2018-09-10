@@ -87,7 +87,7 @@ class Stubber
 
             $tableDirectory = $path.'/'.ucfirst($table);
 
-            if($type == 'create'){
+            if($type == 'Create'){
 
                 $this->file->mkdir($tableDirectory,0777);
 
