@@ -15,6 +15,14 @@ class WizardHelper
     /**
      * @return mixed
      */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getEngine()
     {
         return $this->engine;

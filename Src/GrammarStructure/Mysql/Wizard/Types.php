@@ -21,10 +21,10 @@ class Types
     }
 
     /**
-     * @param $value
+     * @param int $value
      * @return WizardContract
      */
-    public function int($value)
+    public function int($value=11)
     {
         $this->wizard->setTypes(__FUNCTION__,$value);
 

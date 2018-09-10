@@ -35,12 +35,12 @@ class SchemaCapsule implements SchemaCapsuleContract
     /**
      * @param callable $callback
      */
-    public function migrate($type,callable $callback)
+    public function create(callable $callback)
     {
         $wizard = $this->wizardPath;
         $wizard = new $wizard;
 
-        $wizard->schemaType($type);
+        $wizard->schemaType('create');
 
         $wizard->setFile($this->file);
 

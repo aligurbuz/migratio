@@ -10,6 +10,7 @@ class QuerySyntax
         $object         = $this->object;
         $names          = $object->getNames();
         $types          = $object->getTypes();
+        $default        = $object->getDefault();
         $autoIncrement  = $object->getAutoIncrement();
         $primaryKey     = $object->getPrimaryKey();
         $tableCollation = $object->getCollation();
@@ -23,8 +24,9 @@ class QuerySyntax
         {
             $autoIncrementValue     = (isset($autoIncrement[$name])) ? 'AUTO_INCREMENT' : '';
             $primaryKeyValue        = (isset($primaryKey[$name])) ? 'PRIMARY KEY' : '';
+            $defaultValue                = (isset($default[$name])) ? ' DEFAULT "'.$default[$name].'"' : '';
 
-            $list[]=''.$name.' '.$types[$key].' '.$primaryKeyValue.' '.$autoIncrementValue.'';
+            $list[]=''.$name.' '.$types[$key].' '.$defaultValue.' '.$primaryKeyValue.' '.$autoIncrementValue.'';
         }
 
         $syntax.=implode(",",$list);
