@@ -35,7 +35,25 @@ trait QueryStack
      */
     public function setQueryBasic($query)
     {
-        return $this->connection()->query($query);
+        try {
+
+            $query =$this->connection()->query($query);
+
+            return [
+                'result'=>true,
+                'query'=>$query,
+                'message'=>null,
+            ];
+        }
+        catch (\PDOException $exception){
+
+            return [
+                'result'=>false,
+                'query'=>$query,
+                'message'=>$exception->getMessage(),
+            ];
+        }
+
     }
 
 }

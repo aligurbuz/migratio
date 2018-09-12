@@ -126,6 +126,14 @@ class WizardHelper
         return $this->collation;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getNullable()
+    {
+        return $this->nullable;
+    }
+
 
 }
 

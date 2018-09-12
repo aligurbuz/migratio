@@ -2,6 +2,7 @@
 
 namespace Migratio\GrammarStructure\Mysql;
 
+
 class QuerySyntax
 {
 
@@ -15,6 +16,7 @@ class QuerySyntax
         $primaryKey     = $object->getPrimaryKey();
         $tableCollation = $object->getCollation();
         $engine         = $object->getEngine();
+        $nullable       = $object->getNullable();
 
         $syntax = 'CREATE TABLE '.$this->table.' (';
 
@@ -22,11 +24,12 @@ class QuerySyntax
 
         foreach ($names as $key=>$name)
         {
+            $nullableValue          = $this->getNullableValue($nullable,$name);
             $autoIncrementValue     = (isset($autoIncrement[$name])) ? 'AUTO_INCREMENT' : '';
             $primaryKeyValue        = (isset($primaryKey[$name])) ? 'PRIMARY KEY' : '';
-            $defaultValue                = (isset($default[$name])) ? ' DEFAULT "'.$default[$name].'"' : '';
+            $defaultValue           = (isset($default[$name])) ? ' DEFAULT "'.$default[$name].'"' : '';
 
-            $list[]=''.$name.' '.$types[$key].' '.$defaultValue.' '.$primaryKeyValue.' '.$autoIncrementValue.'';
+            $list[]=''.$name.' '.$types[$key].' '.$nullableValue.' '.$defaultValue.' '.$primaryKeyValue.' '.$autoIncrementValue.'';
         }
 
         $syntax.=implode(",",$list);
@@ -46,11 +49,36 @@ class QuerySyntax
 
         $syntax.=';';
 
+        $query=$this->schema->getConnection()->setQueryBasic($syntax);
+
         return [
             'syntax'=>$syntax,
-            'result'=>$this->schema->getConnection()->setQueryBasic($syntax)
+            'type'=>'create',
+            'result'=>$query['result'],
+            'message'=>$query['message'],
             ];
 
+    }
+
+    /**
+     * @param $nullable
+     * @param $name
+     * @return string
+     */
+    protected function getNullableValue($nullable,$name)
+    {
+        $nullableValue='';
+
+        if(isset($nullable[$name])){
+            if($nullable[$name]===false){
+                $nullableValue='NOT NULL';
+            }
+            else{
+                $nullableValue='NULL';
+            }
+        }
+
+        return $nullableValue;
     }
 
 }

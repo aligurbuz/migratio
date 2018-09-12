@@ -27,6 +27,7 @@ class Mysql extends QueryBase
             //get pdo dsn
             $dsn=''.$config['driver'].':host='.$config['host'].';dbname='.$config['database'].'';
             $this->connection = new \PDO($dsn, $config['user'], $config['password']);
+            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             self::$instance=true;
         }

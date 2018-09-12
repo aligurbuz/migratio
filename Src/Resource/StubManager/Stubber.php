@@ -79,7 +79,7 @@ class Stubber
      */
     public function get($params)
     {
-        list($table,$type,$name) = $params;
+        list($table,$name,$type) = $params;
 
         $paths = $this->getPaths($params);
 
@@ -87,7 +87,7 @@ class Stubber
 
             $tableDirectory = $path.'/'.ucfirst($table);
 
-            if($type == 'Create'){
+            if($type == 'create'){
 
                 $this->file->mkdir($tableDirectory,0777);
 

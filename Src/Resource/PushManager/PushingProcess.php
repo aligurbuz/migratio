@@ -23,14 +23,16 @@ trait PushingProcess
 
                     $query = (new $queryBuilder($this->schema,$table,$data))->handle();
 
+
                     $status =($query['result']!==false) ? true : false;
 
                     $results[]= [
                         'success'=>$status,
                         'file'=>$data->getFile(),
                         'table'=>$table,
+                        'type'=>$query['type'],
                         'syntax'=>$query['syntax'],
-                        'message'=>'Migration in the '.$data->getFile().' for '.$table.' has been executed'
+                        'message'=>$query['message']
                     ];
                 }
             }
