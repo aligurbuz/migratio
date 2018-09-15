@@ -129,6 +129,9 @@ class Wizard extends WizardHelper implements WizardContract
         return $this;
     }
 
+    /**
+     * @return $this|WizardContract
+     */
     public function primaryKey()
     {
         $this->primaryKey[$this->getLastName()]=true;

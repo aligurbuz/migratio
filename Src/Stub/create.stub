@@ -15,6 +15,7 @@ class __className__
     {
         return $schema->create(function(Wizard $wizard){
 
+            $wizard->name('id')->int()->auto_increment();
             //
         });
     }

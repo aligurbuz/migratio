@@ -53,8 +53,8 @@ class Stubber
      * @param $params
      * @return bool
      */
-    private function fopenprocess($executionPath,$path,$params){
-
+    private function fopenprocess($executionPath,$path,$params)
+    {
         $dt = fopen($executionPath, "r");
         $content = fread($dt, filesize($executionPath));
         fclose($dt);
@@ -81,32 +81,96 @@ class Stubber
     {
         list($table,$name,$type) = $params;
 
+        $results = [];
+
         $paths = $this->getPaths($params);
 
-        foreach ($paths as $path){
+        foreach ($paths as $pathKey=>$path){
 
             $tableDirectory = $path.'/'.ucfirst($table);
 
-            if($type == 'create'){
-
-                $this->file->mkdir($tableDirectory,0777);
-
-                $fileName = ucfirst($name);
-
-                $filePath = $tableDirectory.'/'.$fileName.'.php';
-
-                $this->file->touch($filePath);
-
-                $stubber = $this->stubber.'/create.stub';
-
-                $this->fopenprocess($stubber,$filePath,['className'=>$fileName]);
-
-
-                $this->file->chmod($tableDirectory,0777,000,true);
+            if(!file_exists($tableDirectory)){
+                $results['directory'][$pathKey]= $this->fileProcess($tableDirectory,'makeDirectory');
             }
+            else{
+                $results['directory'][$pathKey]= $this->getResult(false,
+                    'Already exist the specified directory');
+            }
+
+            $results['directory'][$pathKey]['table']= $table;
+            $results['directory'][$pathKey]['directory']= $table;
+            $results['directory'][$pathKey]['type']= $type;
+
+            $fileName = ucfirst($name);
+
+            $filePath = $tableDirectory.'/'.$fileName.'.php';
+
+            if(!file_exists($filePath)){
+                $results['file'][$pathKey]=$this->fileProcess($filePath,'makeFile');
+            }
+            else{
+                $results['file'][$pathKey]= $this->getResult(false,
+                    'Already exist the specified file');
+            }
+
+            $results['file'][$pathKey]['table']=$table;
+            $results['file'][$pathKey]['file']=$fileName;
+            $results['file'][$pathKey]['type']=$type;
+
+            $stubber = $this->stubber.'/'.$type.'.stub';
+
+            $this->fopenprocess($stubber,$filePath,['className'=>$fileName]);
+
+            $this->file->chmod($tableDirectory,0777,000,true);
         }
 
-        dd($this->config['paths'],$params);
+        return $results;
+    }
+
+    /**
+     * @param $path
+     * @param $process
+     * @return array
+     */
+    private function fileProcess($path,$process)
+    {
+        try {
+            $this->{$process}($path);
+            return $this->getResult(true,null);
+        } catch (IOExceptionInterface $exception) {
+            return $this->getResult(false,
+                "An error occurred while creating your directory at ".$exception->getPath()."");
+        }
+    }
+
+    /**
+     * @param $path
+     * @param string $mode
+     */
+    private function  makeDirectory($path,$mode='0777')
+    {
+        return $this->file->mkdir($path,$mode);
+    }
+
+    /**
+     * @param $path
+     */
+    private function makeFile($path)
+    {
+        return $this->file->touch($path);
+    }
+
+    /**
+     * @param $success
+     * @param $message
+     * @return array
+     */
+    private function getResult($success,$message)
+    {
+        return [
+            'success'=>$success,
+            'message'=>$message
+        ];
     }
 }
 
