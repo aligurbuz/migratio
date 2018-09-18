@@ -13,15 +13,35 @@ interface WizardContract {
 
     /**
      * @param $value
-     * @return Types
+     * @param bool $table
+     * @return TablePropertiesContract
      */
-    public function name($value);
+    public function collation($value,$table=false);
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function comment($value);
 
     /**
      * @param $value
      * @return $this
      */
     public function default($value);
+
+    /**
+     * @param null $name
+     * @param null $value
+     * @return mixed
+     */
+    public function index($name=null,$value=null);
+
+    /**
+     * @param $value
+     * @return Types
+     */
+    public function name($value);
 
     /**
      * @param bool $null
@@ -40,11 +60,11 @@ interface WizardContract {
     public function table();
 
     /**
-     * @param $value
-     * @param bool $table
-     * @return TablePropertiesContract
+     * @param null $name
+     * @param null $value
+     * @return $this
      */
-    public function collation($value,$table=false);
+    public function unique($name=null,$value=null);
 
 }
 

@@ -23,6 +23,11 @@ class Wizard extends WizardHelper implements WizardContract
     protected $collation;
 
     /**
+     * @var $comment
+     */
+    protected $comment;
+
+    /**
      * @var array $primaryKey
      */
     protected $primaryKey=array();
@@ -63,14 +68,40 @@ class Wizard extends WizardHelper implements WizardContract
     protected $default=array();
 
     /**
+     * @var array $index
+     */
+    protected $index=array();
+
+    /**
+     * @var array $unique
+     */
+    protected $unique=array();
+
+    /**
      * @return mixed|void
      */
     public function auto_increment()
     {
         if(count($this->auto_increment)==0){
+
+            if($this->getLastName()===false){
+                $this->name[]='id';
+                $this->setTypes('int',14);
+            }
             $this->auto_increment[$this->getLastName()]=true;
             $this->primaryKey();
         }
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function comment($value)
+    {
+        $this->comment[$this->getLastName()]=$value;
+
+        return $this;
     }
 
     /**
@@ -119,6 +150,21 @@ class Wizard extends WizardHelper implements WizardContract
     }
 
     /**
+     * @param $name
+     * @param null $value
+     * @return $this|mixed
+     */
+    public function index($name=null,$value=null)
+    {
+        $name   = ($name===null) ? $this->getLastName() : $name;
+        $value  = ($value===null) ? $name : $value;
+
+        $this->index[$this->getLastName()]=['name'=>$name,'value'=>$value];
+
+        return $this;
+    }
+
+    /**
      * @param bool $null
      * @return $this
      */
@@ -145,6 +191,21 @@ class Wizard extends WizardHelper implements WizardContract
     public function table()
     {
         return new TableProperties($this);
+    }
+
+    /**
+     * @param $name
+     * @param null $value
+     * @return $this|mixed
+     */
+    public function unique($name=null,$value=null)
+    {
+        $name   = ($name===null) ? $this->getLastName() : $name;
+        $value  = ($value===null) ? $name : $value;
+
+        $this->unique[$this->getLastName()]=['name'=>$name,'value'=>$value];
+
+        return $this;
     }
 }
 

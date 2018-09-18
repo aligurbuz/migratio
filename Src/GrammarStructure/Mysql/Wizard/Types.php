@@ -63,5 +63,15 @@ class Types
 
         return $this->wizard;
     }
+
+    /**
+     * @return WizardContract
+     */
+    public function dateTime()
+    {
+        $this->wizard->setTypes(__FUNCTION__,null);
+
+        return $this->wizard;
+    }
 }
 

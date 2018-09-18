@@ -36,7 +36,10 @@ class BaseRequestProcess
         $paths = self::$paths;
 
         foreach ($paths as $path){
-            $list = array_filter(glob($path.'/*'), 'is_dir');
+            $globPaths = array_filter(glob($path.'/*'), 'is_dir');
+            foreach ($globPaths as $reelPath){
+                $list[]=$reelPath;
+            }
         }
 
         return $list;
@@ -47,9 +50,7 @@ class BaseRequestProcess
      */
     public static function getAllFiles()
     {
-        $paths = self::$paths;
-
-        $directories = self::getAllDirectories($paths);
+        $directories = self::getAllDirectories();
 
         $list = [];
 

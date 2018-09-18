@@ -15,6 +15,14 @@ class WizardHelper
     /**
      * @return mixed
      */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getDefault()
     {
         return $this->default;
@@ -44,6 +52,14 @@ class WizardHelper
     /**
      * @return mixed
      */
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNames()
     {
         return $this->name;
@@ -68,6 +84,14 @@ class WizardHelper
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnique()
+    {
+        return $this->unique;
     }
 
     /**
@@ -105,9 +129,15 @@ class WizardHelper
     /**
      * @param $type
      */
-    public function setTypes($type,$value)
+    public function setTypes($type,$value=null)
     {
-        $this->types[]=''.$type.'('.$value.')';
+        if($value!==null){
+            $this->types[]=''.$type.'('.$value.')';
+        }
+        else{
+            $this->types[]=''.$type.'';
+        }
+
     }
 
     /**

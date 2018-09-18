@@ -17,10 +17,15 @@ class QuerySyntax
         $tableCollation = $object->getCollation();
         $engine         = $object->getEngine();
         $nullable       = $object->getNullable();
+        $coment         = $object->getComment();
+        $unique         = $object->getUnique();
+        $index          = $object->getIndex();
 
         $syntax = 'CREATE TABLE '.$this->table.' (';
 
         $list = [];
+        $uniqueValueList = [];
+        $indexValueList = [];
 
         foreach ($names as $key=>$name)
         {
@@ -28,11 +33,45 @@ class QuerySyntax
             $autoIncrementValue     = (isset($autoIncrement[$name])) ? 'AUTO_INCREMENT' : '';
             $primaryKeyValue        = (isset($primaryKey[$name])) ? 'PRIMARY KEY' : '';
             $defaultValue           = (isset($default[$name])) ? ' DEFAULT "'.$default[$name].'"' : '';
+            $commentValue           = (isset($coment[$name])) ? ' COMMENT "'.$coment[$name].'"' : '';
 
-            $list[]=''.$name.' '.$types[$key].' '.$nullableValue.' '.$defaultValue.' '.$primaryKeyValue.' '.$autoIncrementValue.'';
+            //get unique
+            if(isset($unique[$name])){
+                $uniqueValueList[]      = 'UNIQUE INDEX '.$unique[$name]['name'].' ('.$unique[$name]['value'].' ASC)';
+            }
+
+            //get index
+            if(isset($index[$name])){
+                $indexValueList[]      = 'INDEX '.$index[$name]['name'].' ('.$index[$name]['value'].')';
+            }
+
+
+            $list[]=''.$name.' 
+            '.$types[$key].' 
+            '.$nullableValue.' 
+            '.$defaultValue.' 
+            '.$primaryKeyValue.' 
+            '.$autoIncrementValue.'
+            '.$commentValue.'
+            ';
         }
 
         $syntax.=implode(",",$list);
+
+        if(count($uniqueValueList)){
+
+            //get unique values
+            $syntax.=','.implode(',',$uniqueValueList);
+        }
+
+
+        if(count($indexValueList)){
+
+            //get index values
+            $syntax.=','.implode(',',$indexValueList);
+        }
+
+
 
         $syntax.=')';
 
@@ -40,11 +79,17 @@ class QuerySyntax
         if(isset($tableCollation['table'])){
             $syntax.=' DEFAULT CHARACTER SET '.$tableCollation['table'];
         }
+        else{
+            $syntax.=' DEFAULT CHARACTER SET utf8';
+        }
 
         //get engine
         if($engine!==null)
         {
             $syntax.=' ENGINE='.$engine.' ';
+        }
+        else{
+            $syntax.=' ENGINE=InnoDB ';
         }
 
         $syntax.=';';
