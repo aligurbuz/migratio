@@ -128,14 +128,23 @@ class WizardHelper
 
     /**
      * @param $type
+     * @param null $value
+     * @param null $cond
      */
-    public function setTypes($type,$value=null)
+    public function setTypes($type,$value=null,$cond=null)
     {
-        if($value!==null){
+        if(!is_array($value) && $value!==null){
             $this->types[]=''.$type.'('.$value.')';
         }
         else{
-            $this->types[]=''.$type.'';
+
+            if($cond=='enum'){
+                $this->types[]="".$type."('".implode("','",$value)."')";
+            }
+            else{
+                $this->types[]=''.$type.'';
+            }
+
         }
 
     }

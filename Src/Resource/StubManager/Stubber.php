@@ -89,6 +89,7 @@ class Stubber
 
             $tableDirectory = $path.'/'.ucfirst($table);
 
+
             if(!file_exists($tableDirectory)){
                 $results['directory'][$pathKey]= $this->fileProcess($tableDirectory,'makeDirectory');
             }

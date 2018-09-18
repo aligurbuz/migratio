@@ -45,15 +45,7 @@ class QuerySyntax
                 $indexValueList[]      = 'INDEX '.$index[$name]['name'].' ('.$index[$name]['value'].')';
             }
 
-
-            $list[]=''.$name.' 
-            '.$types[$key].' 
-            '.$nullableValue.' 
-            '.$defaultValue.' 
-            '.$primaryKeyValue.' 
-            '.$autoIncrementValue.'
-            '.$commentValue.'
-            ';
+            $list[]=''.$name.' '.$types[$key].' '.$nullableValue.' '.$defaultValue.' '.$primaryKeyValue.' '.$autoIncrementValue.' '.$commentValue.'';
         }
 
         $syntax.=implode(",",$list);
@@ -74,6 +66,7 @@ class QuerySyntax
 
 
         $syntax.=')';
+
 
         //get table collation
         if(isset($tableCollation['table'])){

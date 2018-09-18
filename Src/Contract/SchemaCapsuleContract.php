@@ -10,5 +10,11 @@ interface SchemaCapsuleContract {
      */
     public function create(callable $callback);
 
+    /**
+     * @param callable $callback
+     * @return mixed
+     */
+    public function alter(callable $callback);
+
 
 }
