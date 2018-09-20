@@ -2,90 +2,63 @@
 
 namespace Migratio\GrammarStructure\Mysql;
 
-
-class QuerySyntax
+class QuerySyntax extends QuerySyntaxHelper
 {
+    /**
+     * @var array $data
+     */
+    protected $data = array();
+    /**
+     * @var array $syntax
+     */
+    protected $syntax = array();
 
+    /**
+     * @return array
+     */
     public function syntaxCreate()
     {
-        $object         = $this->object;
-        $names          = $object->getNames();
-        $types          = $object->getTypes();
-        $default        = $object->getDefault();
-        $autoIncrement  = $object->getAutoIncrement();
-        $primaryKey     = $object->getPrimaryKey();
-        $tableCollation = $object->getCollation();
-        $engine         = $object->getEngine();
-        $nullable       = $object->getNullable();
-        $coment         = $object->getComment();
-        $unique         = $object->getUnique();
-        $index          = $object->getIndex();
+        $this->getWizardObjects($this->object);
 
-        $syntax = 'CREATE TABLE '.$this->table.' (';
+        $this->getCreateTableSyntax();
 
-        $list = [];
-        $uniqueValueList = [];
-        $indexValueList = [];
+        $this->syntax[]=implode(",",$this->getCreateDefaultList());
 
-        foreach ($names as $key=>$name)
-        {
-            $nullableValue          = $this->getNullableValue($nullable,$name);
-            $autoIncrementValue     = (isset($autoIncrement[$name])) ? 'AUTO_INCREMENT' : '';
-            $primaryKeyValue        = (isset($primaryKey[$name])) ? 'PRIMARY KEY' : '';
-            $defaultValue           = (isset($default[$name])) ? ' DEFAULT "'.$default[$name].'"' : '';
-            $commentValue           = (isset($coment[$name])) ? ' COMMENT "'.$coment[$name].'"' : '';
-
-            //get unique
-            if(isset($unique[$name])){
-                $uniqueValueList[]      = 'UNIQUE INDEX '.$unique[$name]['name'].' ('.$unique[$name]['value'].' ASC)';
-            }
-
-            //get index
-            if(isset($index[$name])){
-                $indexValueList[]      = 'INDEX '.$index[$name]['name'].' ('.$index[$name]['value'].')';
-            }
-
-            $list[]=''.$name.' '.$types[$key].' '.$nullableValue.' '.$defaultValue.' '.$primaryKeyValue.' '.$autoIncrementValue.' '.$commentValue.'';
+        //get unique values
+        if(isset($this->data['uniqueValueList']) && count($this->data['uniqueValueList'])){
+            $this->syntax[]=','.implode(',',$this->data['uniqueValueList']);
         }
 
-        $syntax.=implode(",",$list);
-
-        if(count($uniqueValueList)){
-
-            //get unique values
-            $syntax.=','.implode(',',$uniqueValueList);
+        //get index values
+        if(isset($this->data['indexValueList']) && count($this->data['indexValueList'])){
+            $a = $this->syntax[]=','.implode(',',$this->data['indexValueList']);
         }
 
-
-        if(count($indexValueList)){
-
-            //get index values
-            $syntax.=','.implode(',',$indexValueList);
+        //get index values for key
+        if(count($this->getKeyList())){
+            $this->syntax[]=','.implode(',',$this->getKeyList());
         }
 
-
-
-        $syntax.=')';
-
+        $this->syntax[]=')';
 
         //get table collation
-        if(isset($tableCollation['table'])){
-            $syntax.=' DEFAULT CHARACTER SET '.$tableCollation['table'];
+        if(isset($this->data['tableCollation']['table'])){
+            $this->syntax[]=' DEFAULT CHARACTER SET '.$this->data['tableCollation']['table'];
         }
         else{
-            $syntax.=' DEFAULT CHARACTER SET utf8';
+            $this->syntax[]=' DEFAULT CHARACTER SET utf8';
         }
 
         //get engine
-        if($engine!==null)
+        if($this->data['engine']!==null)
         {
-            $syntax.=' ENGINE='.$engine.' ';
+            $this->syntax[]=' ENGINE='.$this->data['engine'].' ';
         }
         else{
-            $syntax.=' ENGINE=InnoDB ';
+            $this->syntax[]=' ENGINE=InnoDB ';
         }
 
-        $syntax.=';';
+        $syntax = implode("",$this->syntax);
 
         $query=$this->schema->getConnection()->setQueryBasic($syntax);
 
@@ -95,29 +68,6 @@ class QuerySyntax
             'result'=>$query['result'],
             'message'=>$query['message'],
             ];
-
     }
-
-    /**
-     * @param $nullable
-     * @param $name
-     * @return string
-     */
-    protected function getNullableValue($nullable,$name)
-    {
-        $nullableValue='';
-
-        if(isset($nullable[$name])){
-            if($nullable[$name]===false){
-                $nullableValue='NOT NULL';
-            }
-            else{
-                $nullableValue='NULL';
-            }
-        }
-
-        return $nullableValue;
-    }
-
 }
 

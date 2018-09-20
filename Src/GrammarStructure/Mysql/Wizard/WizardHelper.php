@@ -73,6 +73,17 @@ class WizardHelper
         return $this->primaryKey;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getReferences()
+    {
+        return $this->references;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getSchemaType()
     {
         return $this->schemaType;
@@ -171,6 +182,23 @@ class WizardHelper
     public function getNullable()
     {
         return $this->nullable;
+    }
+
+    /**
+     * @param $name
+     * @param $data
+     * @param string $specialist
+     */
+    public function updateIndexesForSpecialist($name,$data,$specialist='type')
+    {
+        $indexes = $this->getIndex();
+
+        foreach ($indexes['indexes'] as $key=>$index){
+
+            if($index['name']==$name){
+                $this->index['indexes'][$key][$specialist]=$data;
+            }
+        }
     }
 
 

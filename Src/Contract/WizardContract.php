@@ -33,9 +33,10 @@ interface WizardContract {
     /**
      * @param null $name
      * @param null $value
-     * @return mixed
+     * @param bool $key
+     * @return $this
      */
-    public function index($name=null,$value=null);
+    public function index($name=null,$value=null,$key=false);
 
     /**
      * @param $value
@@ -58,13 +59,6 @@ interface WizardContract {
      * @return TablePropertiesContract
      */
     public function table();
-
-    /**
-     * @param null $name
-     * @param null $value
-     * @return $this
-     */
-    public function unique($name=null,$value=null);
 
 }
 

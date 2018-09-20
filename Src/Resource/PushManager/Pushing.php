@@ -32,7 +32,7 @@ class Pushing extends BaseManager
      */
     public function handle()
     {
-        foreach ($this->getAllFiles() as $table=>$files){
+        foreach ($this->tableFilters() as $table=>$files){
 
             foreach ($files as $file) {
 
@@ -47,6 +47,25 @@ class Pushing extends BaseManager
         }
 
         return $this->processHandler();
+    }
+
+    protected function tableFilters()
+    {
+        $tables = $this->schema->params['tables'];
+
+        $list = [];
+
+        foreach ($this->getAllFiles() as $table=>$allFile) {
+
+            if(count($tables)){
+
+                if(in_array($table,$tables)){
+                    $list[$table]=$allFile;
+                }
+            }
+        }
+
+        return (count($list)) ? $list : $this->getAllFiles();
     }
 
     /**

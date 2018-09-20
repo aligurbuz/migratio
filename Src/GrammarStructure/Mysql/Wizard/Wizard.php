@@ -33,6 +33,11 @@ class Wizard extends WizardHelper implements WizardContract
     protected $primaryKey=array();
 
     /**
+     * @var array $references
+     */
+    protected $references=array();
+
+    /**
      * @var $schemaType
      */
     protected $schemaType;
@@ -150,16 +155,23 @@ class Wizard extends WizardHelper implements WizardContract
     }
 
     /**
-     * @param $name
+     * @param null $name
      * @param null $value
-     * @return $this|mixed
+     * @param bool $key
+     * @return $this|WizardContract
      */
-    public function index($name=null,$value=null)
+    public function index($name=null,$value=null,$key=false)
     {
         $name   = ($name===null) ? $this->getLastName() : $name;
         $value  = ($value===null) ? $name : $value;
 
-        $this->index[$this->getLastName()]=['name'=>$name,'value'=>$value];
+        if($key===false){
+            $this->index[$this->getLastName()]=['name'=>$name,'value'=>$value];
+        }
+
+        if($key===true){
+            $this->index['indexes'][]=['name'=>$name,'value'=>$value];
+        }
 
         return $this;
     }
