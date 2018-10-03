@@ -92,6 +92,14 @@ class WizardHelper
     /**
      * @return mixed
      */
+    public function getTable()
+    {
+        return $this->table;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getTypes()
     {
         return $this->types;
@@ -127,6 +135,14 @@ class WizardHelper
     public function setFile($file)
     {
         $this->file = $file;
+    }
+
+    /**
+     * @param $table
+     */
+    public function setTable($table)
+    {
+        $this->table=$table;
     }
 
     /**
@@ -201,6 +217,14 @@ class WizardHelper
         }
     }
 
-
+    /**
+     * @param $constraint
+     * @param $key
+     * @param $value
+     */
+    public function setReferences($constraint,$key,$value)
+    {
+        $this->references[$constraint][$key]=$value;
+    }
 }
 

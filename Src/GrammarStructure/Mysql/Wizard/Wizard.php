@@ -8,6 +8,11 @@ use Migratio\Contract\WizardContract;
 class Wizard extends WizardHelper implements WizardContract
 {
     /**
+     * @var $randomInstance
+     */
+    public static $randomInstance;
+
+    /**
      * @var array $error
      */
     protected $error = array();
@@ -81,6 +86,11 @@ class Wizard extends WizardHelper implements WizardContract
      * @var array $unique
      */
     protected $unique=array();
+
+    /**
+     * @var $table
+     */
+    protected $table;
 
     /**
      * @return mixed|void

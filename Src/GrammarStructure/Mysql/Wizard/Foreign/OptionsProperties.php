@@ -12,13 +12,19 @@ class OptionsProperties implements OptionsPropertiesContract
     protected $wizard;
 
     /**
-     * Types constructor.
-     * @param $wizard WizardContract
-     * @param $wizard
+     * @var $constraint
      */
-    public function __construct($wizard)
+    protected $constraint;
+
+    /**
+     * OptionsProperties constructor.
+     * @param $wizard
+     * @param $constraint
+     */
+    public function __construct($wizard,$constraint)
     {
         $this->wizard=$wizard;
+        $this->constraint=$constraint;
     }
 
     /**
@@ -26,7 +32,7 @@ class OptionsProperties implements OptionsPropertiesContract
      */
     public function cascade()
     {
-
+        $this->wizard->setReferences($this->constraint,'onOption',__FUNCTION__);
     }
 
     /**
@@ -34,7 +40,7 @@ class OptionsProperties implements OptionsPropertiesContract
      */
     public function noAction()
     {
-
+        $this->wizard->setReferences($this->constraint,'onOption',__FUNCTION__);
     }
 
     /**
@@ -42,7 +48,7 @@ class OptionsProperties implements OptionsPropertiesContract
      */
     public function restrict()
     {
-
+        $this->wizard->setReferences($this->constraint,'onOption',__FUNCTION__);
     }
 
     /**
@@ -50,7 +56,7 @@ class OptionsProperties implements OptionsPropertiesContract
      */
     public function setDefault()
     {
-
+        $this->wizard->setReferences($this->constraint,'onOption',__FUNCTION__);
     }
 
     /**
@@ -58,7 +64,7 @@ class OptionsProperties implements OptionsPropertiesContract
      */
     public function setNull()
     {
-
+        $this->wizard->setReferences($this->constraint,'onOption',__FUNCTION__);
     }
 
 

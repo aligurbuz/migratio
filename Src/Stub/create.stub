@@ -18,6 +18,10 @@ class __className__ implements MigrationContract
 
             $wizard->auto_increment();
             //
+
+            $wizard->name('created_at')->dateTime();
+            $wizard->name('updated_at')->dateTime();
+
         });
     }
 

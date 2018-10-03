@@ -17,6 +17,11 @@ class SchemaCapsule implements SchemaCapsuleContract
     protected $file;
 
     /**
+     * @var $table
+     */
+    protected $table;
+
+    /**
      * @var $wizardNamespace
      */
     protected $wizardNamespace;
@@ -29,11 +34,14 @@ class SchemaCapsule implements SchemaCapsuleContract
     /**
      * SchemaCapsule constructor.
      * @param $config
+     * @param $file
+     * @param $table
      */
-    public function __construct($config,$file)
+    public function __construct($config,$file,$table)
     {
         $this->config                       = $config;
         $this->file                         = $file;
+        $this->table                        = $table;
         $this->wizardNamespace              = $this->getWizardNamespace().'\Wizard';
         $this->wizardAlterGroupNamespace    = $this->getWizardNamespace().'\WizardAlterGroup';
     }
@@ -94,6 +102,8 @@ class SchemaCapsule implements SchemaCapsuleContract
         $wizard = new $wizard;
 
         $wizard->schemaType($type);
+
+        $wizard->setTable($this->table);
 
         $wizard->setFile($this->file);
 

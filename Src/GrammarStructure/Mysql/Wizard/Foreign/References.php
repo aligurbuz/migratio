@@ -12,13 +12,19 @@ class References implements ReferencesContract
     protected $wizard;
 
     /**
-     * Types constructor.
-     * @param $wizard WizardContract
-     * @param $wizard
+     * @var $constraint
      */
-    public function __construct($wizard)
+    protected $constraint;
+
+    /**
+     * References constructor.
+     * @param $wizard
+     * @param $constraint
+     */
+    public function __construct($wizard,$constraint)
     {
         $this->wizard=$wizard;
+        $this->constraint=$constraint;
     }
 
     /**
@@ -28,6 +34,12 @@ class References implements ReferencesContract
      */
     public function references($table, $field = 'id')
     {
-        return new Options($this->wizard);
+        $this->wizard->setReferences($this->constraint,'references',
+            [
+                'table'=>$table,
+                'field'=>$field
+            ]);
+
+        return new Options($this->wizard,$this->constraint);
     }
 }

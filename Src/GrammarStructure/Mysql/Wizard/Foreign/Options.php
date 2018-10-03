@@ -12,13 +12,19 @@ class Options implements OptionsContract
     protected $wizard;
 
     /**
-     * Types constructor.
-     * @param $wizard WizardContract
-     * @param $wizard
+     * @var $constraint
      */
-    public function __construct($wizard)
+    protected $constraint;
+
+    /**
+     * Options constructor.
+     * @param $wizard
+     * @param $constraint
+     */
+    public function __construct($wizard,$constraint)
     {
         $this->wizard=$wizard;
+        $this->constraint=$constraint;
     }
 
     /**
@@ -26,7 +32,8 @@ class Options implements OptionsContract
      */
     public function onDelete()
     {
-        return new OptionsProperties($this->wizard);
+        $this->wizard->setReferences($this->constraint,'on','ON DELETE');
+        return new OptionsProperties($this->wizard,$this->constraint);
     }
 
     /**
@@ -34,7 +41,8 @@ class Options implements OptionsContract
      */
     public function onUpdate()
     {
-        return new OptionsProperties($this->wizard);
+        $this->wizard->setReferences($this->constraint,'on','ON UPDATE');
+        return new OptionsProperties($this->wizard,$this->constraint);
     }
 
 }

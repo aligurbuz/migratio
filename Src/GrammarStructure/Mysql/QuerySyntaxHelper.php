@@ -151,5 +151,34 @@ class QuerySyntaxHelper
         return $keyList;
     }
 
+    /**
+     * @param $reference
+     * @return string
+     */
+    protected function getReferenceSyntax($reference)
+    {
+        $list = [];
+
+        foreach ($reference as $constraint=>$values){
+
+            $list[]=',CONSTRAINT '.$constraint.' FOREIGN KEY ('.$values['key'].') 
+            REFERENCES '.$values['references']['table'].'('.$values['references']['field'].') '.$this->getOnProcess($values);
+        }
+
+        return implode (" ",$list);
+    }
+
+    /**
+     * @param $referenceValue
+     */
+    private function getOnProcess($referenceValue)
+    {
+        if(isset($referenceValue['on']) && isset($referenceValue['onOption'])){
+            return ''.$referenceValue['on'].' '.strtoupper($referenceValue['onOption']).'';
+        }
+
+        return '';
+    }
+
 }
 

@@ -13,6 +13,11 @@ class Foreign implements ForeignContract
     protected $wizard;
 
     /**
+     * @var $constraint
+     */
+    protected $constraint;
+
+    /**
      * Types constructor.
      * @param $wizard WizardContract
      * @param $wizard
@@ -28,6 +33,7 @@ class Foreign implements ForeignContract
      */
     public function constraint($constraint)
     {
+        $this->constraint=$constraint;
         return $this;
     }
 
@@ -37,7 +43,13 @@ class Foreign implements ForeignContract
      */
     public function key($key)
     {
-        return new References($this->wizard);
+        $constraint = ($this->constraint===null) ? $key : $this->constraint;
+
+        $table = $this->wizard->getTable();
+
+        $this->wizard->setReferences($constraint,'key',$key);
+
+        return new References($this->wizard,$constraint);
     }
 
 

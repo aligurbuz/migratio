@@ -40,7 +40,7 @@ class Pushing extends BaseManager
 
                 $require = require_once ($file);
 
-                $capsule = new SchemaCapsule($this->config,$file);
+                $capsule = new SchemaCapsule($this->config,$file,$table);
 
                 $this->list[$table][]=(new $className)->up($capsule);
             }

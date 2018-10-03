@@ -31,12 +31,16 @@ class QuerySyntax extends QuerySyntaxHelper
 
         //get index values
         if(isset($this->data['indexValueList']) && count($this->data['indexValueList'])){
-            $a = $this->syntax[]=','.implode(',',$this->data['indexValueList']);
+            $this->syntax[]=','.implode(',',$this->data['indexValueList']);
         }
 
         //get index values for key
         if(count($this->getKeyList())){
             $this->syntax[]=','.implode(',',$this->getKeyList());
+        }
+
+        if(count($this->data['references'])){
+            $this->syntax[]=$this->getReferenceSyntax($this->data['references']);
         }
 
         $this->syntax[]=')';
