@@ -60,5 +60,12 @@ interface WizardContract {
      */
     public function table();
 
+    /**
+     * @param null $name
+     * @param null $value
+     * @return mixed
+     */
+    public function unique($name=null,$value=null);
+
 }
 
