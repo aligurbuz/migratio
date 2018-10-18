@@ -73,7 +73,7 @@ class BaseRequestProcess
     {
         $pathParse = explode ("/",$path);
 
-        return strtolower(end($pathParse));
+        return end($pathParse);
     }
 
     /**

@@ -104,7 +104,9 @@ class Stubber
 
             $fileName = ucfirst($name);
 
-            $filePath = $tableDirectory.'/'.$fileName.'.php';
+            $fileNameWithTime = time().'_'.$fileName;
+
+            $filePath = $tableDirectory.'/'.$fileNameWithTime.'.php';
 
             if(!file_exists($filePath)){
                 $results['file'][$pathKey]=$this->fileProcess($filePath,'makeFile');

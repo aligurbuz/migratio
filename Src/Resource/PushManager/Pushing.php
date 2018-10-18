@@ -34,9 +34,12 @@ class Pushing extends BaseManager
     {
         foreach ($this->tableFilters() as $table=>$files){
 
+            $table = strtolower($table);
+
             foreach ($files as $file) {
 
-                $className = $this->getClassName($file);
+                $getClassName = preg_replace('@(\d+)_@is','',$file);
+                $className = $this->getClassName($getClassName);
 
                 $require = require_once ($file);
 
@@ -75,7 +78,6 @@ class Pushing extends BaseManager
     protected function getClassName($file)
     {
         $className = str_replace(".php","",BaseRequestProcess::getFileName($file));
-        $className = ucfirst($className);
 
         return $className;
     }
