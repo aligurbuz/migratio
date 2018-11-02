@@ -5,7 +5,7 @@ namespace Migratio\GrammarStructure\Mysql\Wizard;
 use Migratio\Contract\WizardAlterContract;
 use Migratio\Contract\WizardAlterGroupContract;
 
-class WizardAlterGroup implements WizardAlterGroupContract
+class WizardAlterGroup extends Wizard implements WizardAlterGroupContract
 {
     /**
      * @param $field
@@ -31,7 +31,9 @@ class WizardAlterGroup implements WizardAlterGroupContract
      */
     private function getWizardAlterInstance($group)
     {
-        return new WizardAlter($group);
+        $this->setAlterType('group',$group);
+
+        return new WizardAlter($this);
     }
 }
 

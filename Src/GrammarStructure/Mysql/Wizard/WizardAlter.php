@@ -13,17 +13,12 @@ class WizardAlter extends Wizard implements WizardContract,WizardAlterContract
     protected $after;
 
     /**
-     * @var $group
-     */
-    protected $group;
-
-    /**
      * WizardAlter constructor.
-     * @param $group
+     * @param $wizard
      */
-    public function __construct($group)
+    public function __construct($wizard)
     {
-        $this->group=$group;
+        $this->wizard=$wizard;
     }
 
     /**
@@ -32,9 +27,9 @@ class WizardAlter extends Wizard implements WizardContract,WizardAlterContract
      */
     public function after($field)
     {
-        $this->after[$this->getLastName()]=$field;
+        $this->wizard->setAlterType('place',['AFTER'=>$field]);
 
-        return $this;
+        return $this->wizard;
     }
 }
 

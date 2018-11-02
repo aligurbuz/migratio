@@ -4,6 +4,7 @@ namespace Migratio\GrammarStructure\Mysql;
 
 class QuerySyntax extends QuerySyntaxHelper
 {
+
     /**
      * @var array $data
      */
@@ -22,26 +23,7 @@ class QuerySyntax extends QuerySyntaxHelper
 
         $this->getCreateTableSyntax();
 
-        $this->syntax[]=implode(",",$this->getCreateDefaultList());
-
-        //get unique values
-        if(isset($this->data['uniqueValueList']) && count($this->data['uniqueValueList'])){
-            $this->syntax[]=','.implode(',',$this->data['uniqueValueList']);
-        }
-
-        //get index values
-        if(isset($this->data['indexValueList']) && count($this->data['indexValueList'])){
-            $this->syntax[]=','.implode(',',$this->data['indexValueList']);
-        }
-
-        //get index values for key
-        if(count($this->getKeyList())){
-            $this->syntax[]=','.implode(',',$this->getKeyList());
-        }
-
-        if(count($this->data['references'])){
-            $this->syntax[]=$this->getReferenceSyntax($this->data['references']);
-        }
+        $this->getDefaultSyntaxGroup();
 
         $this->syntax[]=')';
 
@@ -72,6 +54,76 @@ class QuerySyntax extends QuerySyntaxHelper
             'result'=>$query['result'],
             'message'=>$query['message'],
             ];
+    }
+
+    /**
+     * @return mixed|void
+     */
+    private function getDefaultSyntaxGroup()
+    {
+
+        $this->syntax[]=implode(",",$this->getCreateDefaultList());
+
+        //get unique values
+        if(isset($this->data['uniqueValueList']) && count($this->data['uniqueValueList'])){
+            $this->syntax[]=','.implode(',',$this->data['uniqueValueList']);
+        }
+
+        //get index values
+        if(isset($this->data['indexValueList']) && count($this->data['indexValueList'])){
+            $this->syntax[]=','.implode(',',$this->data['indexValueList']);
+        }
+
+        //get index values for key
+        if(count($this->getKeyList())){
+            $this->syntax[]=','.implode(',',$this->getKeyList());
+        }
+
+        if(count($this->data['references'])){
+            $this->syntax[]=$this->getReferenceSyntax($this->data['references']);
+        }
+    }
+
+
+    /**
+     * @return mixed|void
+     */
+    public function syntaxAlter()
+    {
+        $this->getWizardObjects($this->object);
+
+        $alterType = $this->object->getAlterType();
+
+        $group = $alterType['group'];
+
+        $this->getDefaultSyntaxGroup();
+
+        return $this->{$group}($alterType);
+
+    }
+
+    private function addColumn($alterType)
+    {
+        if(isset($alterType['place'])){
+
+            foreach ($alterType['place'] as $placeKey=>$placeValue){
+                $placeList=$placeKey .' '.$placeValue.'';
+            }
+
+            $syntax = implode("",$this->syntax);
+
+            $alterSytanx = 'ALTER TABLE '.$this->table.' ADD COLUMN '.$syntax.' '.$placeList;
+
+            $query=$this->schema->getConnection()->setQueryBasic($alterSytanx);
+
+            return [
+                'syntax'=>$syntax,
+                'type'=>'create',
+                'result'=>$query['result'],
+                'message'=>$query['message'],
+            ];
+        }
+
     }
 }
 

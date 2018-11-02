@@ -20,6 +20,11 @@ class Wizard extends WizardHelper implements WizardContract
     /**
      * @var array
      */
+    protected $alterType = [];
+
+    /**
+     * @var array
+     */
     protected $auto_increment=array();
 
     /**

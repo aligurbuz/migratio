@@ -23,7 +23,6 @@ trait PushingProcess
 
                     $query = (new $queryBuilder($this->schema,$table,$data))->handle();
 
-
                     $status =($query['result']!==false) ? true : false;
 
                     $results[]= [

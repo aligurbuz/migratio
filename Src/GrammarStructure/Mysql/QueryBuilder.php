@@ -53,6 +53,14 @@ class QueryBuilder extends QuerySyntax
         return $this->syntaxCreate();
     }
 
+    /**
+     * @return mixed
+     */
+    public function alter()
+    {
+        return $this->syntaxAlter();
+    }
+
 
 }
 

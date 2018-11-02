@@ -48,30 +48,20 @@ class SchemaCapsule implements SchemaCapsuleContract
 
     /**
      * @param callable $callback
+     * @return mixed|string
      */
     public function alter(callable $callback)
     {
-        $wizardInstance = $this->getWizardInstance(__FUNCTION__);
-
-        $callback = call_user_func_array($callback,[$wizardInstance]);
-
-        $this->checkErrors($wizardInstance);
-
-        return $wizardInstance;
+        return $this->callbackWizardInstance(__FUNCTION__,$callback);
     }
 
     /**
      * @param callable $callback
+     * @return mixed|string
      */
     public function create(callable $callback)
     {
-        $wizardInstance = $this->getWizardInstance(__FUNCTION__);
-
-        $callback = call_user_func_array($callback,[$wizardInstance]);
-
-        $this->checkErrors($wizardInstance);
-
-        return $wizardInstance;
+        return $this->callbackWizardInstance(__FUNCTION__,$callback);
     }
 
     /**
@@ -99,6 +89,7 @@ class SchemaCapsule implements SchemaCapsuleContract
     private function getWizardInstance($type)
     {
         $wizard = ($type=="create") ? $this->wizardNamespace : $this->wizardAlterGroupNamespace;
+
         $wizard = new $wizard;
 
         $wizard->schemaType($type);
@@ -108,6 +99,21 @@ class SchemaCapsule implements SchemaCapsuleContract
         $wizard->setFile($this->file);
 
         return $wizard;
+    }
+
+    /**
+     * @param $method
+     * @return string
+     */
+    private function callbackWizardInstance($method,callable $callback)
+    {
+        $wizardInstance = $this->getWizardInstance($method);
+
+        $callbackReturn = call_user_func_array($callback,[$wizardInstance]);
+
+        $this->checkErrors($wizardInstance);
+
+        return $wizardInstance;
     }
 }
 

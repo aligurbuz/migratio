@@ -130,11 +130,28 @@ class WizardHelper
     }
 
     /**
+     * @param $name
+     */
+    public function setName($name)
+    {
+        $this->name[]=$name;
+    }
+
+    /**
      * @param $file
      */
     public function setFile($file)
     {
         $this->file = $file;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     */
+    public function setAlterType($key,$value)
+    {
+        $this->alterType[$key]=$value;
     }
 
     /**
@@ -225,6 +242,14 @@ class WizardHelper
     public function setReferences($constraint,$key,$value)
     {
         $this->references[$constraint][$key]=$value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAlterType()
+    {
+        return $this->alterType;
     }
 }
 
